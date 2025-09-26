@@ -88,7 +88,19 @@ public class MusicOrganizer
         }
     }
     
-    
+    public void playSamplesByArtist(String artist)
+    {
+        boolean found = false;
+        for(String filename : files) {
+            if(filename.contains(artist)) {
+                player.playSample(filename);
+                found = true;
+            }
+        }
+        if(!found) {
+            System.out.println("No tracks found for artist: " + artist);
+        }
+    }
     
     /**
      * Remove a file from the collection.
