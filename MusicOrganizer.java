@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class MusicOrganizer
 {
     // An ArrayList for storing the file names of music files.
-    private ArrayList<String> files;
+    private ArrayList<Track> trackList;
     // A player for the music files.
     private MusicPlayer player;
         
@@ -18,47 +18,53 @@ public class MusicOrganizer
      */
     public MusicOrganizer()
     {
-        files = new ArrayList<>();
+        trackList = new ArrayList<>();
         player = new MusicPlayer();
+    }
+    
+    public void processAllTracks(){
+        for (Track track : trackList){
+            System.out.println(track);
+        }
     }
     
     /**
      * Add a file to the collection.
      * @param filename The file to be added.
      */
-    public void addFile(String filename)
+    public void addTrack(Track track)
     {
-        files.add(filename);
+        trackList.add(track);
     }
     
     /**
      * Return the number of files in the collection.
      * @return The number of files in the collection.
      */
-    public int getNumberOfFiles()
+    public int getNumberOfTracks()
     {
-        return files.size();
+        return trackList.size();
     }
     
     /**
      * List a file from the collection.
      * @param index The index of the file to be listed.
      */
-    public void listFile(int index)
+    public void listTrack(int index)
     {
         if(validIndex(index)) {
-            String filename = files.get(index);
-            System.out.println(filename);
+            Track track = trackList.get(index);
+            System.out.println(track);
         }
     }
     
     /**
      * Show a list of all the files in the collection.
      */
-    public void listAllFiles()
+    public void listAllTracks()
     {
-        for(String filename : files) {
-            System.out.println(filename);
+        for(Track track : trackList) {
+            System.out.println(track);
         }
     }
     
@@ -68,8 +74,8 @@ public class MusicOrganizer
     public void listWithIndex()
     {
         int position = 0;
-        for(String filename : files) {
-            System.out.println(position + ": " + filename);
+        for(Track track : trackList) {
+            System.out.println(position + ": " + track);
             position++;
         }
     }
@@ -77,9 +83,10 @@ public class MusicOrganizer
     public void listMatching(String searchString)
     {
         boolean found = false;
-        for(String filename : files) {
-            if(filename.contains(searchString)) {
-            System.out.println(filename);
+        for(Track track : trackList) {
+            if(track.getArtist().contains(searchString) || track.getFileName().contains(searchString)) 
+            {
+            System.out.println(track);
             found = true;
             }
         }
@@ -91,9 +98,9 @@ public class MusicOrganizer
     public void playSamplesByArtist(String artist)
     {
         boolean found = false;
-        for(String filename : files) {
-            if(filename.contains(artist)) {
-                player.playSample(filename);
+        for(Track track : trackList) {
+            if(track.getArtist().contains(artist)) {
+                player.playSample(track.getFileName());
                 found = true;
             }
         }
@@ -106,10 +113,10 @@ public class MusicOrganizer
      * Remove a file from the collection.
      * @param index The index of the file to be removed.
      */
-    public void removeFile(int index)
+    public void removeTrack(int index)
     {
         if(validIndex(index)) {
-            files.remove(index);
+            trackList.remove(index);
         }
     }
 
@@ -121,8 +128,8 @@ public class MusicOrganizer
     public void startPlaying(int index)
     {
         if(validIndex(index)) {
-            String filename = files.get(index);
-            player.startPlaying(filename);
+            Track track = trackList.get(index);
+            player.startPlaying(track.getFileName());
         }
     }
     
@@ -141,8 +148,8 @@ public class MusicOrganizer
     public void playAndWait(int index)
     {
         if(validIndex(index)) {
-            String filename = files.get(index);
-            player.playSample(filename);
+            Track track = trackList.get(index);
+            player.playSample(track.getFileName());
         }
     }
 
@@ -162,7 +169,7 @@ public class MusicOrganizer
             System.out.println("Index cannot be negative: " + index);
             valid = false;
         }
-        else if(index >= files.size()) {
+        else if(index >= trackList.size()) {
             System.out.println("Index is too large: " + index);
             valid = false;
         }
